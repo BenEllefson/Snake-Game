@@ -34,3 +34,8 @@ I feel this gives the player a better chance to catch up to the faster pace of t
 Put an ascending musical sound effect synced with the countdown to start the game, and a sound effect that sounds like a chomp when the snake eats food.:
 I just felt that when you hear sound effects when youre playing a game it really adds to the fun and immersion especially in more 
 of an arcade stlye game. This prompt added a few functions called playtone, initaudio and playcountdownsound which was interesting to work with for the first time. One thing the AI didn't quite capture right away was having the pitch of the countdown going up instead of down. This gave it more of a crescendo feel before you get into the game which i enjoy.
+
+
+Make the red square for the food look like an apple, with a small black stem on top and a little white on the outside resembling the shine of the apple. Then make the snake have two white eyes and a red line representing the tongue:
+This just added a little more visual character to the game to make it look more like a snake and to have the red block in the shape of an apple. I wanted to keep it a brighter color still so the contrast makes it easier for the player to find it on the screen quickly. 
+I had to also ask the AI to keep the tongue facing the direction the snake was going otherwise it made the snake head look more like a chicken. 
