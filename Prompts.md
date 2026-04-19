@@ -17,3 +17,14 @@ and show a "Game Over" message with the final score in the center of the screen.
 Display the current score in the top-left corner during play.
 When the game is over, let the player press R to reset everything and play again.
 
+// Prompts used by Ben Ellefson
+
+Convert the imported java file into HTML:
+This was to create a working Web-version of the Snake game described by the seed prompts
+to test that it was able to run by itself.
+
+Add a start button to the game instead of the game starting automatically after you close the last one.:
+This add a start button with an .addEventListener function on a click that would make the game easier to manage
+if you wanted to play more than once. I feel its way more user friendly and i always felt when i play games that
+it helped the player prepare for the next game better.
+
