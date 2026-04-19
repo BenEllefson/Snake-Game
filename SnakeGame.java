@@ -102,6 +102,57 @@
         let gameStarted = false;
         let gameInterval;
         
+        // Audio context for sound effects
+        let audioContext;
+        
+        function initAudio() {
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            } catch (e) {
+                console.warn('Web Audio API not supported');
+            }
+        }
+        
+        function playTone(frequency, duration, type = 'sine', volume = 0.3) {
+            if (!audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+            oscillator.type = type;
+            
+            gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+        
+        function playCountdownSound(count) {
+            // Ascending musical notes: C4, D4, E4, F4
+            const frequencies = [261.63, 293.66, 329.63, 349.23]; // C4, D4, E4, F4
+            if (count >= 1 && count <= 3) {
+                playTone(frequencies[3 - count], 0.3, 'sine', 0.4);
+            } else if (count === 0) {
+                // "GO!" sound - higher and more exciting
+                playTone(frequencies[3], 0.4, 'triangle', 0.5);
+            }
+        }
+        
+        function playChompSound() {
+            // Create a "chomp" sound using multiple frequencies
+            playTone(200, 0.1, 'square', 0.3);
+            setTimeout(() => playTone(150, 0.1, 'square', 0.2), 50);
+            setTimeout(() => playTone(100, 0.15, 'sawtooth', 0.25), 100);
+        }
+        
+        // Initialize audio
+        initAudio();
+        
         // Start button
         document.getElementById('startButton').addEventListener('click', () => {
             if (!gameStarted) {
@@ -113,13 +164,16 @@
                 
                 let count = 3;
                 countdownElement.textContent = count;
+                playCountdownSound(count);
                 
                 const countdownInterval = setInterval(() => {
                     count--;
                     if (count > 0) {
                         countdownElement.textContent = count;
+                        playCountdownSound(count);
                     } else if (count === 0) {
                         countdownElement.textContent = 'GO!';
+                        playCountdownSound(count);
                         setTimeout(() => {
                             countdownElement.style.display = 'none';
                             gameRunning = true;
@@ -245,6 +299,7 @@
             if (newHead.x === food.x && newHead.y === food.y) {
                 score += 10;
                 document.getElementById('score').textContent = `Score: ${score}`;
+                playChompSound();
                 generateFood();
             } else {
                 snake.pop();
