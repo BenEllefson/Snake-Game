@@ -227,25 +227,95 @@
         }
         
         function drawSnake() {
-            ctx.fillStyle = '#00FF00';
-            for (let segment of snake) {
-                ctx.fillRect(
-                    segment.x * CELL_SIZE,
-                    segment.y * CELL_SIZE,
-                    CELL_SIZE,
-                    CELL_SIZE
-                );
+            for (let i = 0; i < snake.length; i++) {
+                const segment = snake[i];
+                const x = segment.x * CELL_SIZE;
+                const y = segment.y * CELL_SIZE;
+
+                ctx.fillStyle = '#00AA00';
+                ctx.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+
+                if (i === 0) {
+                    // Draw eyes on the head
+                    const eyeRadius = CELL_SIZE * 0.1;
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.beginPath();
+                    ctx.arc(x + CELL_SIZE * 0.28, y + CELL_SIZE * 0.32, eyeRadius, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.arc(x + CELL_SIZE * 0.72, y + CELL_SIZE * 0.32, eyeRadius, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.fillStyle = '#000000';
+                    ctx.beginPath();
+                    ctx.arc(x + CELL_SIZE * 0.28, y + CELL_SIZE * 0.32, eyeRadius * 0.5, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.arc(x + CELL_SIZE * 0.72, y + CELL_SIZE * 0.32, eyeRadius * 0.5, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Draw tongue pointing in the current movement direction
+                    const tongueBaseX = x + CELL_SIZE * 0.5;
+                    const tongueBaseY = y + CELL_SIZE * 0.55;
+                    const tongueLength = CELL_SIZE * 0.28;
+                    const tipOffset = CELL_SIZE * 0.08;
+                    const tongueTipX = tongueBaseX + direction.x * tongueLength;
+                    const tongueTipY = tongueBaseY + direction.y * tongueLength;
+
+                    ctx.strokeStyle = '#FF0000';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(tongueBaseX, tongueBaseY);
+                    ctx.lineTo(tongueTipX, tongueTipY);
+                    ctx.stroke();
+
+                    ctx.fillStyle = '#FF0000';
+                    ctx.beginPath();
+                    if (direction.x > 0) {
+                        ctx.moveTo(tongueTipX, tongueTipY);
+                        ctx.lineTo(tongueTipX - tipOffset, tongueTipY - tipOffset);
+                        ctx.lineTo(tongueTipX - tipOffset, tongueTipY + tipOffset);
+                    } else if (direction.x < 0) {
+                        ctx.moveTo(tongueTipX, tongueTipY);
+                        ctx.lineTo(tongueTipX + tipOffset, tongueTipY - tipOffset);
+                        ctx.lineTo(tongueTipX + tipOffset, tongueTipY + tipOffset);
+                    } else if (direction.y < 0) {
+                        ctx.moveTo(tongueTipX, tongueTipY);
+                        ctx.lineTo(tongueTipX - tipOffset, tongueTipY + tipOffset);
+                        ctx.lineTo(tongueTipX + tipOffset, tongueTipY + tipOffset);
+                    } else {
+                        ctx.moveTo(tongueTipX, tongueTipY);
+                        ctx.lineTo(tongueTipX - tipOffset, tongueTipY - tipOffset);
+                        ctx.lineTo(tongueTipX + tipOffset, tongueTipY - tipOffset);
+                    }
+                    ctx.closePath();
+                    ctx.fill();
+                }
             }
         }
         
         function drawFood() {
-            ctx.fillStyle = '#FF0000';
-            ctx.fillRect(
-                food.x * CELL_SIZE,
-                food.y * CELL_SIZE,
-                CELL_SIZE,
-                CELL_SIZE
-            );
+            const x = food.x * CELL_SIZE;
+            const y = food.y * CELL_SIZE;
+            const centerX = x + CELL_SIZE / 2;
+            const centerY = y + CELL_SIZE / 2;
+            const radius = CELL_SIZE * 0.38;
+
+            // Apple body
+            ctx.fillStyle = '#D22B2B';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY + CELL_SIZE * 0.05, radius, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Stem
+            ctx.fillStyle = '#3A2A1A';
+            ctx.fillRect(centerX - CELL_SIZE * 0.04, y + CELL_SIZE * 0.08, CELL_SIZE * 0.08, CELL_SIZE * 0.18);
+
+            // Shine highlight
+            ctx.fillStyle = 'rgba(255,255,255,0.75)';
+            ctx.beginPath();
+            ctx.ellipse(centerX + CELL_SIZE * 0.16, centerY - CELL_SIZE * 0.12, CELL_SIZE * 0.1, CELL_SIZE * 0.16, -0.6, 0, Math.PI * 2);
+            ctx.fill();
         }
         
         function generateFood() {
