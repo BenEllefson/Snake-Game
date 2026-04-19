@@ -57,6 +57,18 @@
         #startButton:hover {
             background-color: #45a049;
         }
+        
+        #countdown {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 72px;
+            font-weight: bold;
+            color: #FF0000;
+            display: none;
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
@@ -66,6 +78,7 @@
         <div id="score">Score: 0</div>
         <div id="instructions">Use arrow keys to control the snake</div>
         <button id="startButton">Start Game</button>
+        <div id="countdown"></div>
     </div>
 
     <script>
@@ -93,9 +106,28 @@
         document.getElementById('startButton').addEventListener('click', () => {
             if (!gameStarted) {
                 gameStarted = true;
-                gameRunning = true;
                 document.getElementById('startButton').style.display = 'none';
-                gameInterval = setInterval(gameLoop, 100);
+                
+                const countdownElement = document.getElementById('countdown');
+                countdownElement.style.display = 'block';
+                
+                let count = 3;
+                countdownElement.textContent = count;
+                
+                const countdownInterval = setInterval(() => {
+                    count--;
+                    if (count > 0) {
+                        countdownElement.textContent = count;
+                    } else if (count === 0) {
+                        countdownElement.textContent = 'GO!';
+                        setTimeout(() => {
+                            countdownElement.style.display = 'none';
+                            gameRunning = true;
+                            gameInterval = setInterval(gameLoop, 100);
+                        }, 500); // Show "GO!" for 500ms before starting
+                        clearInterval(countdownInterval);
+                    }
+                }, 1000);
             }
         });
         
