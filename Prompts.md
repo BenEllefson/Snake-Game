@@ -28,3 +28,9 @@ This add a start button with an .addEventListener function on a click that would
 if you wanted to play more than once. I feel its way more user friendly and i always felt when i play games that
 it helped the player prepare for the next game better.
 
+Put a countdown on the screen after the start button is pushed starting at 3. Instead of putting 0 at the end, have it say "GO!" and the game begin immediatly after:
+I feel this gives the player a better chance to catch up to the faster pace of the game with a countdown. This prompt added a countdownelemnt to the event listener of the start button and was tied into the click command to begin immediately after that action.
+
+Put an ascending musical sound effect synced with the countdown to start the game, and a sound effect that sounds like a chomp when the snake eats food.:
+I just felt that when you hear sound effects when youre playing a game it really adds to the fun and immersion especially in more 
+of an arcade stlye game. This prompt added a few functions called playtone, initaudio and playcountdownsound which was interesting to work with for the first time. One thing the AI didn't quite capture right away was having the pitch of the countdown going up instead of down. This gave it more of a crescendo feel before you get into the game which i enjoy.
