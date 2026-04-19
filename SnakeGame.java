@@ -41,6 +41,22 @@
             margin-top: 20px;
             font-size: 14px;
         }
+        
+        #startButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        #startButton:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
@@ -49,6 +65,7 @@
         <canvas id="gameCanvas" width="600" height="600"></canvas>
         <div id="score">Score: 0</div>
         <div id="instructions">Use arrow keys to control the snake</div>
+        <button id="startButton">Start Game</button>
     </div>
 
     <script>
@@ -68,7 +85,19 @@
         let nextDirection = { x: 1, y: 0 };
         let food = { x: 15, y: 15 };
         let score = 0;
-        let gameRunning = true;
+        let gameRunning = false;
+        let gameStarted = false;
+        let gameInterval;
+        
+        // Start button
+        document.getElementById('startButton').addEventListener('click', () => {
+            if (!gameStarted) {
+                gameStarted = true;
+                gameRunning = true;
+                document.getElementById('startButton').style.display = 'none';
+                gameInterval = setInterval(gameLoop, 100);
+            }
+        });
         
         // Keyboard controls
         document.addEventListener('keydown', (e) => {
@@ -93,7 +122,7 @@
         });
         
         function drawGrid() {
-            ctx.strokeStyle = '#505050';
+            ctx.strokeStyle = '#000000';
             ctx.lineWidth = 1;
             
             for (let i = 0; i <= GRID_SIZE; i++) {
@@ -192,7 +221,7 @@
         
         function draw() {
             // Clear canvas
-            ctx.fillStyle = '#323232';
+            ctx.fillStyle = '#FFFFFF';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
             // Draw grid
@@ -204,12 +233,11 @@
         }
         
         function gameLoop() {
-            update();
-            draw();
+            if (gameRunning) {
+                update();
+                draw();
+            }
         }
-        
-        // Start game loop - update 10 times per second
-        setInterval(gameLoop, 100);
     </script>
 </body>
 </html>
